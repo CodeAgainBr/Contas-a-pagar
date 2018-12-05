@@ -24,3 +24,52 @@ toastr.options = {
   "showMethod": "fadeIn",
   "hideMethod": "fadeOut"
 };
+
+
+$( document ).on('turbolinks:load', function() {
+  $('#dtFornecedor').DataTable( {
+    "language": {
+      "decimal":        "",
+      "emptyTable":     "Nenhum fornecedor disponível na tabela.",
+      "info":           "Mostrando _START_ até _END_ de _TOTAL_ fornecedores",
+      "infoEmpty":      "Sem fornecedores disponíveis.",
+      "infoFiltered":   "(de um total de _MAX_ fornecedores)",
+      "infoPostFix":    "",
+      "thousands":      ",",
+      "lengthMenu":     "Mostrar _MENU_ fornecedores",
+      "loadingRecords": "Carregando...",
+      "processing":     "Processando...",
+      "search":         "Procurar fornecedor:",
+      "zeroRecords":    "Nenhum fornecedor encontrado",
+      "paginate": {
+        "first":      "Prim.",
+        "last":       "Últ.",
+        "next":       "Próx.",
+        "previous":   "Ant."
+      },
+    },
+  });
+
+  $('#dtConta').DataTable( {
+    "language": {
+      "decimal":        "",
+      "emptyTable":     "Nenhuma conta disponível na tabela.",
+      "info":           "Mostrando _START_ até _END_ de _TOTAL_ contas",
+      "infoEmpty":      "Sem contas disponíveis.",
+      "infoFiltered":   "(de um total de _MAX_ contas)",
+      "infoPostFix":    "",
+      "thousands":      ",",
+      "lengthMenu":     "Mostrar _MENU_ contas",
+      "loadingRecords": "Carregando...",
+      "processing":     "Processando...",
+      "search":         "Procurar conta:",
+      "zeroRecords":    "Nenhuma conta encontrado",
+      "paginate": {
+        "first":      "Prim.",
+        "last":       "Últ.",
+        "next":       "Próx.",
+        "previous":   "Ant."
+      },
+    },
+  });
+});

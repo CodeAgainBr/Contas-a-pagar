@@ -10,10 +10,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181030221329) do
+ActiveRecord::Schema.define(version: 20181203201651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "autor_livros", force: :cascade do |t|
+    t.integer  "autor_id"
+    t.integer  "livro_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["autor_id"], name: "index_autor_livros_on_autor_id", using: :btree
+    t.index ["livro_id"], name: "index_autor_livros_on_livro_id", using: :btree
+  end
+
+  create_table "autors", force: :cascade do |t|
+    t.string   "nome"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nome"], name: "index_autors_on_nome", unique: true, using: :btree
+  end
+
+  create_table "conta", force: :cascade do |t|
+    t.string   "descricao"
+    t.string   "tipo"
+    t.string   "despesa"
+    t.float    "valor"
+    t.date     "vencimento"
+    t.integer  "fornecedor_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["fornecedor_id"], name: "index_conta_on_fornecedor_id", using: :btree
+  end
+
+  create_table "fornecedores", force: :cascade do |t|
+    t.string   "nome"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nome"], name: "index_fornecedores_on_nome", unique: true, using: :btree
+  end
+
+  create_table "livros", force: :cascade do |t|
+    t.string   "titulo"
+    t.string   "isbn"
+    t.float    "preco",           default: 0.0
+    t.date     "data_publicacao"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.index ["isbn"], name: "index_livros_on_isbn", unique: true, using: :btree
+    t.index ["titulo"], name: "index_livros_on_titulo", unique: true, using: :btree
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -37,4 +84,7 @@ ActiveRecord::Schema.define(version: 20181030221329) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "autor_livros", "autors"
+  add_foreign_key "autor_livros", "livros"
+  add_foreign_key "conta", "fornecedores"
 end

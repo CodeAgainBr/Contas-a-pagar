@@ -1,0 +1,141 @@
+<%= link_to "Sair", destroy_user_session_path, method: :delete %>
+
+<section>
+  <div class="row">
+    <div class="col-12 mt-4">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title mb-0">Fornecedores</h4>
+        </div>
+        <div class="card-content collapse show">
+          <div class="card-body">
+            <table id="dtFornecedor" class="table table-striped table-bordered" style="width:100%">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Email</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @fornecedores.each_with_index do |fornecedor, i| %>
+                  <tr>
+                    <td id="list_nome_fornecedor<%= i %>"><p class="padrao<%= i %>" id="nome_padrao<%= i %>"><%= fornecedor.nome %></p></td>
+                    <td id="list_email_fornecedor<%= i %>"><p class="padrao<%= i %>" id="email_padrao<%= i %>"><%= fornecedor.email %></p></td>
+                    <td class="text-center" id="list_edit_fornecedor<%= i %>">
+                      <button onclick="editFornecedor(<%= i %>);" class="padrao<%= i %>"><i class="fas fa-pen text-dark"></i></button>
+                    </td>
+                    <td class="text-center" id="list_delete_fornecedor<%= i %>">
+                      <%= link_to fornecedor, method: :delete, data: { confirm: 'Você tem certeza?' }, title: "Apagar", class: "padrao"+i.to_s do %><i class="fas fa-times text-danger"></i><% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 mt-4">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title mb-0">
+            Cadastrar Fornecedor
+          </h4>
+        </div>
+        <div class="card-content collapse show">
+          <div class="card-body">
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Nome:</span>
+                  </div>  
+                  <input type="text" id="nome_fornecedor" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">E-mail:</span>
+                  </div>  
+                  <input type="text" id="email_fornecedor" class="form-control">
+                </div>
+              </div>
+            </div>
+            <button onclick="cadastrarFornecedor();" class="btn btn-primary ml-auto">
+              <i class="fa fa-check-square-o"></i> Cadastrar Fornecedor
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function cadastrarFornecedor(){
+    nome = $("#nome_fornecedor").val();
+    email = $("#email_fornecedor").val();
+
+    $.ajax({
+      url: "/novo/fornecedor",
+      data: {
+        nome: nome,
+        email: email
+      },
+      success: function(){
+        alert("fornecedor cadastrado com sucesso");
+      }
+    });
+  }
+
+  function editFornecedor(i){
+    $(".padrao"+i).hide();
+    $("#list_nome_fornecedor"+i).append("<input type='text' id='edit_nome"+i+"' class='form-control edit_padrao"+i+"'>");
+    $("#list_email_fornecedor"+i).append("<input type='text' id='edit_email"+i+"' class='form-control edit_padrao"+i+"'>");
+    $("#list_edit_fornecedor"+i).append("<button onclick='updateFornecedor("+i+");' title='salvar' class='edit_padrao"+i+"'><i class='fas fa-pen text-dark'></i></button>");
+    $("#list_delete_fornecedor"+i).append("<button onclick='defaultFornecedor("+i+");' title='cancelar' class='edit_padrao"+i+"'><i class='fas fa-times text-danger'></i></button>");
+  }
+
+  function defaultFornecedor(i){
+    $(".edit_padrao"+i).remove();
+    $(".padrao"+i).show();
+  }
+
+  function updateFornecedor(i){
+    nomePadrao = $("#nome_padrao"+i).html();
+    updateNome = $("#edit_nome"+i).val();
+    updateEmail = $("#edit_email"+i).val();
+
+    $.ajax({
+      url: "/atualizar/fornecedor/"+nomePadrao,
+      data: {
+        updateNome: updateNome,
+        updateEmail: updateEmail
+      },
+      success: function(){
+        alert("fornecedor atualizado com sucesso");
+        atualizarItemLista(updateNome, updateEmail, i);
+        defaultFornecedor(i);
+      }
+    });
+  }
+
+  function atualizarItemLista(novo_nome, novo_email, i){
+    $("#nome_padrao"+i).html(novo_nome);
+    $("#email_padrao"+i).html(novo_email);
+  }
+
+  function getLista(){
+    $.ajax({
+      url: "/",
+      success: function(result,status,xhr){
+        obj = JSON.parse(result);
+        alert(obj.nome);
+      }
+    });
+  }
+</script>

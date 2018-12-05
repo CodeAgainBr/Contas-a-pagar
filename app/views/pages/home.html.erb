@@ -1,1 +1,5 @@
-<%= link_to "Sair", destroy_user_session_path, method: :delete %>
+{[
+<% @fornecedores.each_with_index do |fornecedor, i| %>
+{"nome":"<%= fornecedor.nome %>", "email":"<%= fornecedor.email %>"}<% if i < (@fornecedores.length - 1) %>,<% end %>
+<% end %>
+]}

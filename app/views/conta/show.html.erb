@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Descricao:</strong>
+  <%= @contum.descricao %>
+</p>
+
+<p>
+  <strong>Tipo:</strong>
+  <%= @contum.tipo %>
+</p>
+
+<p>
+  <strong>Despesa:</strong>
+  <%= @contum.despesa %>
+</p>
+
+<p>
+  <strong>Valor:</strong>
+  <%= @contum.valor %>
+</p>
+
+<p>
+  <strong>Vencimento:</strong>
+  <%= @contum.vencimento %>
+</p>
+
+<p>
+  <strong>Fornecedor:</strong>
+  <%= @contum.fornecedor %>
+</p>
+
+<%= link_to 'Edit', edit_contum_path(@contum) %> |
+<%= link_to 'Back', conta_index_path %>
