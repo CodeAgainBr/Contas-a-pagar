@@ -1,0 +1,217 @@
+<section>
+  <div class="row">
+    <div class="col-12 mt-4">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title mb-0">Conta</h4>
+        </div>
+        <div class="card-content collapse show">
+          <div class="card-body">
+            <table id="dtFornecedor" class="table table-striped table-bordered" style="width:100%">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Descricao</th>
+                  <th>Despesa</th>
+                  <th>Valor</th>
+                  <th>Vencimento</th>
+                  <th>Fornecedor</th>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @contas.each_with_index do |conta, i| %>
+                  <tr>
+                    <td id="list_descricao_conta<%= i %>"><p class="padrao_conta<%= i %>" id="descricao_padrao<%= i %>"><%= conta.descricao %></p></td>
+                    <td id="list_despesa_conta<%= i %>"><p class="padrao_conta<%= i %>" id="despesa_padrao<%= i %>"><%= conta.despesa %></p></td>
+                    <td id="list_valor_conta<%= i %>"><p class="padrao_conta<%= i %>" id="valor_padrao<%= i %>"><%= conta.valor %></p></td>
+                    <td id="list_vencimento_conta<%= i %>"><p class="padrao_conta<%= i %>" id="vencimento_padrao<%= i %>"><%= conta.vencimento %></p></td>
+                    <td id="list_fornecedor_conta<%= i %>"><p class="padrao_conta<%= i %>" id="fornecedor_padrao<%= i %>"><%= conta.fornecedor.nome %></p></td>
+                    <td class="text-center" id="list_edit_conta<%= i %>">
+                      <button onclick="editConta(<%= i %>);" class="padrao_conta<%= i %>"><i class="fas fa-pen text-dark"></i></button>
+                    </td>
+                    <td class="text-center" id="list_delete_conta<%= i %>">
+                      <%= link_to conta, method: :delete, data: { confirm: 'Você tem certeza?' }, title: "Apagar", class: "padrao_conta"+i.to_s do %><i class="fas fa-times text-danger"></i><% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 mt-4">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title mb-0">
+            Cadastrar Conta
+          </h4>
+        </div>
+
+        <div class="card-content collapse show">
+          <div class="card-body">
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Descricao:</span>
+                  </div>  
+                  <input type="text" id="descricao_conta" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Despesa:</span>
+                  </div>  
+                  <input type="text" id="despesa_conta" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Valor:</span>
+                  </div>  
+                  <input type="number" id="valor_conta" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group form-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Vencimento:</span>
+                  </div>  
+                  <input type="date" id="vencimento_conta" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Fornecedor:</span>
+                  </div>
+                  <select class="form-control" id="fornecedor_conta">
+                    <option>Selecione o fornecedor: </option>
+                    
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12">
+                <button onclick="window.location.href = '/fornecedores';" class="btn btn-primary ml-auto">
+                  Cadastrar fornecedor
+                </button>
+              </div>
+              <div class="col-12">
+                <button onclick="cadastrarConta();" class="btn btn-success mt-2 float-right">
+                  Cadastrar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  fornecedores = <%= raw @fornecedores.to_json %>;
+
+  $(document).ready(function(){
+    preencherSelect("fornecedor_conta");
+  });
+
+  function preencherSelect(select){
+    for(i = 0; i < fornecedores.length; i++){
+      $("#"+select).append("<option value="+fornecedores[i].nome+">"+fornecedores[i].nome+"</option>");
+    }
+  }
+
+  function cadastrarConta(){
+    descricao = $("#descricao_conta").val();
+    despesa = $("#despesa_conta").val();
+    valor = $("#valor_conta").val();
+    vencimento = $("#vencimento_conta").val();
+    fornecedor = $("#fornecedor_conta").val();
+
+    if(descricao != "" && despesa != "" && valor != "" && vencimento != "" && fornecedor != ""){
+      $.ajax({
+        url: "/nova/conta",
+        data: {
+          descricao: descricao,
+          despesa: despesa,
+          valor: valor,
+          vencimento: vencimento,
+          fornecedor: fornecedor
+        },
+        success: function(){
+          alert("conta cadastrada com sucesso");
+          location.reload();
+        }
+      });
+    }
+  }
+
+  function editConta(i){
+    descricao = $("#descricao_padrao"+i).html();
+    despesa = $("#despesa_padrao"+i).html();
+    valor = $("#valor_padrao"+i).html();
+    vencimento = $("#vencimento_padrao"+i).html();
+    fornecedor = $("#fornecedor_padrao"+i).html();
+
+    $(".padrao_conta"+i).hide();
+    $("#list_descricao_conta"+i).append("<input type='text' id='edit_descricao"+i+"' class='form-control edit_padrao_conta"+i+"' value='"+descricao+"'>");
+    $("#list_despesa_conta"+i).append("<input type='text' id='edit_despesa"+i+"' class='form-control edit_padrao_conta"+i+"' value='"+despesa+"'>");
+    $("#list_valor_conta"+i).append("<input type='number' id='edit_valor"+i+"' class='form-control edit_padrao_conta"+i+"' value='"+valor+"'>");
+    $("#list_vencimento_conta"+i).append("<input type='date' id='edit_vencimento"+i+"' class='form-control edit_padrao_conta"+i+"' value='"+vencimento+"'>");
+    $("#list_fornecedor_conta"+i).append("<select class='form-control edit_padrao_conta"+i+"' id='edit_conta_fornecedor"+i+"'></select>");
+    $("#list_edit_conta"+i).append("<button onclick='updateConta("+i+");' title='salvar' class='edit_padrao_conta"+i+"'><i class='fas fa-pen text-dark'></i></button>");
+    $("#list_delete_conta"+i).append("<button onclick='defaultConta("+i+");' title='cancelar' class='edit_padrao_conta"+i+"'><i class='fas fa-times text-danger'></i></button>");
+
+    preencherSelect("edit_conta_fornecedor"+i);
+  }
+  
+  function updateConta(i){
+    descricao_antiga = $("#descricao_padrao"+i).html();
+    descricao = $("#edit_descricao"+i).val();
+    despesa = $("#edit_despesa"+i).val();
+    valor = $("#edit_valor"+i).val();
+    vencimento = $("#edit_vencimento"+i).val();
+    fornecedor = $("#edit_conta_fornecedor"+i).val();
+
+    $.ajax({
+      url: "/atualizar/conta/"+descricao_antiga,
+      data: {
+        descricao: descricao,
+        despesa: despesa,
+        valor: valor,
+        vencimento: vencimento,
+        fornecedor: fornecedor
+      },
+      success: function(){
+        alert("Conta atualizada com sucesso");
+        atualizarItemLista(descricao, despesa, valor, vencimento, fornecedor, i);
+        defaultConta(i);
+      }
+    });
+  }
+
+  function atualizarItemLista(descricao, despesa, valor, vencimento, fornecedor, i){
+    $("#descricao_padrao"+i).html(descricao);
+    $("#despesa_padrao"+i).html(despesa);
+    $("#valor_padrao"+i).html(valor);
+    $("#vencimento_padrao"+i).html(vencimento);
+    $("#fornecedor_padrao"+i).html(fornecedor);
+  }
+
+  function defaultConta(i){
+    $(".edit_padrao_conta"+i).remove();
+    $(".padrao_conta"+i).show();
+  }
+</script>

@@ -1,8 +1,7 @@
-class CreateConta < ActiveRecord::Migration[5.0]
+class CreateContas < ActiveRecord::Migration[5.0]
   def change
-    create_table :conta do |t|
+    create_table :contas do |t|
       t.string :descricao
-      t.string :tipo
       t.string :despesa
       t.float :valor
       t.date :vencimento
@@ -10,5 +9,6 @@ class CreateConta < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+    add_index :contas, :descricao, unique: true
   end
 end

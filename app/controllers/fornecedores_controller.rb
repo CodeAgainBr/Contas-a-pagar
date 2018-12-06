@@ -7,18 +7,8 @@ class FornecedoresController < ApplicationController
     @fornecedores = Fornecedor.all
   end
 
-  # GET /fornecedores/1
   # GET /fornecedores/1.json
   def show
-  end
-
-  # GET /fornecedores/new
-  def new
-    @fornecedor = Fornecedor.new
-  end
-
-  # GET /fornecedores/1/edit
-  def edit
   end
 
   # POST /fornecedores
@@ -28,7 +18,7 @@ class FornecedoresController < ApplicationController
 
     respond_to do |format|
       if @fornecedor.save
-        format.html { redirect_to @fornecedor, notice: 'Fornecedor was successfully created.' }
+        format.html { redirect_to fornecedores_url, notice: 'Fornecedor was successfully created.' }
         format.json { render :show, status: :created, location: @fornecedor }
       else
         format.html { render :new }
@@ -42,7 +32,7 @@ class FornecedoresController < ApplicationController
   def update
     respond_to do |format|
       if @fornecedor.update(fornecedor_params)
-        format.html { redirect_to @fornecedor, notice: 'Fornecedor was successfully updated.' }
+        format.html { redirect_to fornecedores_url, notice: 'Fornecedor was successfully updated.' }
         format.json { render :show, status: :ok, location: @fornecedor }
       else
         format.html { render :edit }

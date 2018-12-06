@@ -65,9 +65,18 @@
                 </div>
               </div>
             </div>
-            <button onclick="cadastrarFornecedor();" class="btn btn-primary ml-auto">
-              <i class="fa fa-check-square-o"></i> Cadastrar Fornecedor
-            </button>
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <button onclick="window.location.href = '/';" class="btn btn-primary ml-auto">
+                  Voltar
+                </button>
+              </div>
+              <div class="col-md-6">
+                <button onclick="cadastrarFornecedor();" class="btn btn-success ml-auto">
+                  <i class="fa fa-check-square-o"></i> Cadastrar Fornecedor
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -88,23 +97,22 @@
       },
       success: function(){
         alert("fornecedor cadastrado com sucesso");
+        location.reload();
       }
     });
   }
 
   function editFornecedor(i){
+    nome = $("#nome_padrao"+i).html();
+    email = $("#email_padrao"+i).html();
+
     $(".padrao"+i).hide();
-    $("#list_nome_fornecedor"+i).append("<input type='text' id='edit_nome"+i+"' class='form-control edit_padrao"+i+"'>");
-    $("#list_email_fornecedor"+i).append("<input type='text' id='edit_email"+i+"' class='form-control edit_padrao"+i+"'>");
-    $("#list_edit_fornecedor"+i).append("<button onclick='updateFornecedor("+i+");' title='salvar' class='edit_padrao"+i+"'><i class='fas fa-pen text-dark'></i></button>");
-    $("#list_delete_fornecedor"+i).append("<button onclick='defaultFornecedor("+i+");' title='cancelar' class='edit_padrao"+i+"'><i class='fas fa-times text-danger'></i></button>");
+    $("#list_nome_fornecedor"+i).append("<input type='text' id='edit_nome"+i+"' class='form-control edit_padrao_fornecedor"+i+"' value='"+nome+"'>");
+    $("#list_email_fornecedor"+i).append("<input type='text' id='edit_email"+i+"' class='form-control edit_padrao_fornecedor"+i+"' value='"+email+"'>");
+    $("#list_edit_fornecedor"+i).append("<button onclick='updateFornecedor("+i+");' title='salvar' class='edit_padrao_fornecedor"+i+"'><i class='fas fa-pen text-dark'></i></button>");
+    $("#list_delete_fornecedor"+i).append("<button onclick='defaultFornecedor("+i+");' title='cancelar' class='edit_padrao_fornecedor"+i+"'><i class='fas fa-times text-danger'></i></button>");
   }
-
-  function defaultFornecedor(i){
-    $(".edit_padrao"+i).remove();
-    $(".padrao"+i).show();
-  }
-
+  
   function updateFornecedor(i){
     nomePadrao = $("#nome_padrao"+i).html();
     updateNome = $("#edit_nome"+i).val();
@@ -129,13 +137,8 @@
     $("#email_padrao"+i).html(novo_email);
   }
 
-  function getLista(){
-    $.ajax({
-      url: "/",
-      success: function(result,status,xhr){
-        obj = JSON.parse(result);
-        alert(obj.nome);
-      }
-    });
+  function defaultFornecedor(i){
+    $(".edit_padrao_fornecedor"+i).remove();
+    $(".padrao"+i).show();
   }
 </script>

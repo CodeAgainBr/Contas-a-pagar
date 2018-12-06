@@ -2,16 +2,14 @@
 
 one:
   descricao: MyString
-  tipo: MyString
   despesa: MyString
   valor: 1.5
-  vencimento: 2018-12-03
+  vencimento: 2018-12-05
   fornecedor: one
 
 two:
   descricao: MyString
-  tipo: MyString
   despesa: MyString
   valor: 1.5
-  vencimento: 2018-12-03
+  vencimento: 2018-12-05
   fornecedor: two
